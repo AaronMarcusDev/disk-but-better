@@ -65,9 +65,9 @@ st.subheader("Overzicht kunstwerken") # MAIN PART!!
 
 def highlight_risk(row):
     if row.Risico == "Hoog":
-        return ["background-color: #ffcccc"] * len(row)
+        return ["background-color: #f52c11"] * len(row)
     if row.Risico == "Middel":
-        return ["background-color: #fff3cd"] * len(row)
+        return ["background-color: #f58e11"] * len(row)
     return [""] * len(row)
 
 st.dataframe(filtered.style.apply(highlight_risk, axis=1), use_container_width=True)
