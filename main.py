@@ -14,16 +14,35 @@ n = 30
 
 # Pandas dataframe I filled temporarily with some random data
 #        ^-- love this stuff
-df = pd.DataFrame({
-    "DISK_ID": [f"KUNST-{i:03}" for i in range(n)],
-    "Naam": [f"Kunstwerk {i}" for i in range(n)],
-    "Bouwjaar": np.random.randint(1950, 2020, n),
-    "Risico": np.random.choice(["Laag", "Middel", "Hoog"], n, p=[0.4, 0.4, 0.2]),
-    "Inspectie": np.random.choice(["NI", "PI", "OK"], n),
-    "Onderhoudskosten (€)": np.random.randint(10000, 200000, n),
-    "Vervangingskosten (€)": np.random.randint(300000, 2000000, n),
-    "Monument": np.random.choice(["Ja", "Nee"], n, p=[0.2, 0.8])
-})
+# df = pd.DataFrame({
+#     "DISK_ID": [f"KUNST-{i:03}" for i in range(n)],
+#     "Naam": [f"Kunstwerk {i}" for i in range(n)],
+#     "Bouwjaar": np.random.randint(1950, 2020, n),
+#     "Risico": np.random.choice(["Laag", "Middel", "Hoog"], n, p=[0.4, 0.4, 0.2]),
+#     "Inspectie": np.random.choice(["NI", "PI", "OK"], n),
+#     "Onderhoudskosten (€)": np.random.randint(10000, 200000, n),
+#     "Vervangingskosten (€)": np.random.randint(300000, 2000000, n),
+#     "Monument": np.random.choice(["Ja", "Nee"], n, p=[0.2, 0.8])
+# })
+
+# Load dataframe from Excel
+df = pd.read_excel('./data/dataframe.xlsx',
+    skiprows=1, # Skip the "Vertrouwelijkheid: RWS Informatie" Row
+    usecols=[
+        "Complex_Code", 
+        "Complex_Naam", 
+        "Complex_Omschrijving", 
+        "KW_Soort", 
+        "Ecologie Passeerbaarheid", 
+        "Provincie 1", 
+        "Gemeente 1"
+    ]
+)
+
+print("[INFO] DataFrame loaded successfully!")
+print(df.head())  # Display first few rows
+
+exit(0)
 
 # Sidebar filter options
 st.sidebar.header("Filters")
