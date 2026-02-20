@@ -37,12 +37,20 @@ df = pd.read_excel('./data/dataframe.xlsx',
         "Provincie 1", 
         "Gemeente 1"
     ]
-)
+).head(1000)
+
+# --- minimal additions to make dashboard work ---
+n = len(df)
+df["DISK_ID"] = df["Complex_Code"]
+df["Risico"] = np.random.choice(["Laag", "Middel", "Hoog"], n, p=[0.4, 0.4, 0.2])
+df["Inspectie"] = np.random.choice(["NI", "PI", "OK"], n)
+df["Onderhoudskosten (€)"] = np.random.randint(10000, 200000, n)
+df["Vervangingskosten (€)"] = np.random.randint(300000, 2000000, n)
 
 print("[INFO] DataFrame loaded successfully!")
+print("-"*90)
 print(df.head())  # Display first few rows
-
-exit(0)
+print("-"*90)
 
 # Sidebar filter options
 st.sidebar.header("Filters")
