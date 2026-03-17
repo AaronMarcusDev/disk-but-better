@@ -27,9 +27,10 @@ if (use_real_data):
                 "KW_Soort", 
                 "Ecologie Passeerbaarheid", 
                 "Provincie 1", 
-                "Gemeente 1"
+                "Gemeente 1",
             ]
             ).head(1000)
+
 else:
     df = pd.DataFrame({
         "Complex_Code": [f"KUNST-{i:03}" for i in range(n)],
@@ -41,6 +42,12 @@ else:
         "Vervangingskosten (€)": np.random.randint(300000, 2000000, n),
         "Monument": np.random.choice(["Ja", "Nee"], n, p=[0.2, 0.8])
     })
+    
+    # ^
+    # Random component presence (for demo mode)
+    df["Has_Pump"] = np.random.choice([True, False], n)
+    df["Has_Motor"] = np.random.choice([True, False], n)
+    df["Has_Road"] = np.random.choice([True, False], n)
     #Pandas dataframe I filled temporarily with some random data
     #  ^-- love this stuff
 
@@ -159,4 +166,8 @@ risk_fig = px.pie(
 
 st.plotly_chart(risk_fig, use_container_width=True)
 
-st.info("Prototype — geen echte DISK data")
+if (not use_real_data):
+    st.info("Prototype — geen echte DISK data")
+
+# For passing data to other pages
+st.session_state["df"] = df
