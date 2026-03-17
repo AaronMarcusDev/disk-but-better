@@ -9,6 +9,24 @@ st.set_page_config(layout="wide")
 
 st.title("Detailpagina Kunstwerk")
 
+# Load the dataframe from session_state (set in main.py)
+df = st.session_state.get("df", None)
+
+if df is None:
+    st.error("Geen data beschikbaar. Open eerst de hoofdpagina.")
+    st.stop()
+
+# Select artwork
+selected = st.selectbox(
+    "Selecteer kunstwerk handmatig",
+    df["DISK_ID"].unique()
+)
+
+st.info("This will be replaced by the NFC reader")
+
+asset = df[df["DISK_ID"] == selected].iloc[0]
+
+
 st.subheader("3D Voorbeeld")
 
 def load_clean_stl(path):
@@ -78,25 +96,6 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, use_container_width=True)
-
-
-
-# Load the dataframe from session_state (set in main.py)
-df = st.session_state.get("df", None)
-
-if df is None:
-    st.error("Geen data beschikbaar. Open eerst de hoofdpagina.")
-    st.stop()
-
-# Select artwork
-selected = st.selectbox(
-    "Selecteer kunstwerk handmatig",
-    df["DISK_ID"].unique()
-)
-
-st.info("This will be replaced by the NFC reader")
-
-asset = df[df["DISK_ID"] == selected].iloc[0]
 
 # --- Layout ---
 col1, col2 = st.columns([1, 2])
