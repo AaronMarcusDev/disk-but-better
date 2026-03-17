@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 
+use_real_data = False # Change this to false in order to demo!
+
 st.set_page_config(layout="wide")
 
 st.title("DISK - Kunstwerken Dashboard (Prototype)")
@@ -12,32 +14,36 @@ np.random.seed(42)
 
 n = 30
 
-# Pandas dataframe I filled temporarily with some random data
-#        ^-- love this stuff
-# df = pd.DataFrame({
-#     "DISK_ID": [f"KUNST-{i:03}" for i in range(n)],
-#     "Naam": [f"Kunstwerk {i}" for i in range(n)],
-#     "Bouwjaar": np.random.randint(1950, 2020, n),
-#     "Risico": np.random.choice(["Laag", "Middel", "Hoog"], n, p=[0.4, 0.4, 0.2]),
-#     "Inspectie": np.random.choice(["NI", "PI", "OK"], n),
-#     "Onderhoudskosten (€)": np.random.randint(10000, 200000, n),
-#     "Vervangingskosten (€)": np.random.randint(300000, 2000000, n),
-#     "Monument": np.random.choice(["Ja", "Nee"], n, p=[0.2, 0.8])
-# })
+if (use_real_data):
+    # Load dataframe from Excel
+    df = pd.read_excel(
+        './data/dataframe.xlsx',
+        skiprows=1, # Skip the "Vertrouwelijkheid: RWS Informatie" Row
+        usecols=
+            [
+                "Complex_Code", 
+                "Complex_Naam", 
+                "Complex_Omschrijving", 
+                "KW_Soort", 
+                "Ecologie Passeerbaarheid", 
+                "Provincie 1", 
+                "Gemeente 1"
+            ]
+            ).head(1000)
+else:
+    df = pd.DataFrame({
+        "Complex_Code": [f"KUNST-{i:03}" for i in range(n)],
+        "Complex_Naam": "DEMO MODE",
+        "Bouwjaar": np.random.randint(1950, 2020, n),
+        "Risico": np.random.choice(["Laag", "Middel", "Hoog"], n, p=[0.4, 0.4, 0.2]),
+        "Inspectie": np.random.choice(["NI", "PI", "OK"], n),
+        "Onderhoudskosten (€)": np.random.randint(10000, 200000, n),
+        "Vervangingskosten (€)": np.random.randint(300000, 2000000, n),
+        "Monument": np.random.choice(["Ja", "Nee"], n, p=[0.2, 0.8])
+    })
+    #Pandas dataframe I filled temporarily with some random data
+    #  ^-- love this stuff
 
-# Load dataframe from Excel
-df = pd.read_excel('./data/dataframe.xlsx',
-    skiprows=1, # Skip the "Vertrouwelijkheid: RWS Informatie" Row
-    usecols=[
-        "Complex_Code", 
-        "Complex_Naam", 
-        "Complex_Omschrijving", 
-        "KW_Soort", 
-        "Ecologie Passeerbaarheid", 
-        "Provincie 1", 
-        "Gemeente 1"
-    ]
-).head(1000)
 
 # --- minimal additions to make dashboard work ---
 n = len(df)
@@ -141,8 +147,15 @@ st.subheader("Risicoverdeling")
 risk_fig = px.pie(
     filtered,
     names="Risico",
-    title="Verdeling risiconiveaus"
+    title="Verdeling risiconiveaus",
+    color="Risico",
+    color_discrete_map={
+        "Laag": "#2596be",     # Blue
+        "Middel": "#f58e12",   # Orange
+        "Hoog": "#f52c11"      # Red
+    }
 )
+
 
 st.plotly_chart(risk_fig, use_container_width=True)
 
