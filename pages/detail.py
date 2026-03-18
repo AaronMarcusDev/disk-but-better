@@ -56,7 +56,7 @@ def load_clean_stl(path):
 
 
 # Load + clean STL
-vertices, i, j, k = load_clean_stl("stl/eiffel.stl")
+vertices, i, j, k = load_clean_stl("bridge.stl")
 
 # Build Plotly figure
 fig = go.Figure(
