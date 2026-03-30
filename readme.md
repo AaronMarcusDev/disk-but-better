@@ -14,6 +14,11 @@ $ ./venv/bin/activate.ps1
 $ streamlit run main.py
 ```
 
+**To exit**
+```bash
+$ deactivate
+```
+
 It should show an adress and open in the terminal automatically :)
 
 
