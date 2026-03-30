@@ -4,6 +4,25 @@ import plotly.express as px
 import plotly.graph_objects as go
 from stl import mesh
 import numpy as np
+from NFC.read_nfc import read_text
+
+if "nfc_selected" not in st.session_state:
+    st.session_state.nfc_selected = None
+
+
+st.subheader("Selecteer via NFC")
+
+if st.button("Lees NFC tag"):
+    try:
+        tag_value = read_text()
+        if tag_value:
+            st.session_state.nfc_selected = tag_value
+            st.success(f"NFC tag gelezen: {tag_value}")
+        else:
+            st.warning("Geen geldige NFC data gevonden.")
+    except Exception as e:
+        st.error(f"Fout bij lezen NFC: {e}")
+
 
 st.set_page_config(layout="wide")
 
@@ -11,16 +30,22 @@ st.title("Detailpagina Kunstwerk")
 
 # Load the dataframe from session_state (set in main.py)
 df = st.session_state.get("df", None)
+use_real_data = st.session_state.get("use_real_data", False)
 
 if df is None:
     st.error("Geen data beschikbaar. Open eerst de hoofdpagina.")
     st.stop()
 
 # Select artwork
-selected = st.selectbox(
+manual_selection = st.selectbox(
     "Selecteer kunstwerk handmatig",
-    df["DISK_ID"].unique()
+    df["DISK_ID"].unique(),
+    key="manual_select"
 )
+
+# NFC overrides manual selection
+selected = st.session_state.nfc_selected or manual_selection
+
 
 st.info("This will be replaced by the NFC reader")
 
@@ -109,16 +134,17 @@ col1, col2 = st.columns([1, 2])
 # LEFT COLUMN: Metadata
 with col1:
     basis_df = pd.DataFrame({
-        "Eigenschap": ["DISK ID", "Naam", "Bouwjaar", "Risico", "Inspectiestatus", "Monument"],
-        "Waarde": [
-            asset["DISK_ID"],
-            asset.get("Naam", "—"),
-            asset.get("Bouwjaar", "—"),
-            asset["Risico"],
-            asset["Inspectie"],
-            asset.get("Monument", "—")
-            ]
-        })
+    "Eigenschap": ["DISK ID", "Naam", "Bouwjaar", "Risico", "Inspectiestatus", "Monument"],
+    "Waarde": [
+        str(asset["DISK_ID"]),
+        str(asset.get("Naam", "—")),
+        str(asset.get("Bouwjaar", "—")),
+        str(asset["Risico"]),
+        str(asset["Inspectie"]),
+        str(asset.get("Monument", "—"))
+    ]
+})
+
 
     st.subheader("Basisinformatie")
     st.table(basis_df)
@@ -139,18 +165,20 @@ with col1:
     st.subheader("Kosten")
     st.table(kosten_df)
     
-st.subheader("Componenten")
+if not use_real_data:
+    
+    st.subheader("Componenten")
 
-components_df = pd.DataFrame({
-    "Component": ["Waterpomp", "Motor", "Wegdek"],
-    "Aanwezig": [
-        "Ja" if asset["Has_Pump"] else "Nee",
-        "Ja" if asset["Has_Motor"] else "Nee",
-        "Ja" if asset["Has_Road"] else "Nee"
-    ]
-})
+    components_df = pd.DataFrame({
+        "Component": ["Waterpomp", "Motor", "Wegdek"],
+        "Aanwezig": [
+            "Ja" if asset["Has_Pump"] else "Nee",
+            "Ja" if asset["Has_Motor"] else "Nee",
+            "Ja" if asset["Has_Road"] else "Nee"
+        ]
+    })
 
-st.table(components_df)
+    st.table(components_df)
 
 
 

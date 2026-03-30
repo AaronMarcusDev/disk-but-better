@@ -171,11 +171,13 @@ if (not use_real_data):
     st.info("Prototype — geen echte DISK data")
     
 try:
-    st.info(read_text()) # NFC!
+    st.info("The inital read of the NFC tag was: " + read_text()) # NFC!
 except:
     print("-"*20)
     print("[ERROR] Could not read NFC tag!!")
     print("-"*20)
 
 # For passing data to other pages
+# https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
 st.session_state["df"] = df
+st.session_state["use_real_data"] = use_real_data
