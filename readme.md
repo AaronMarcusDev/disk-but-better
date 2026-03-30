@@ -33,3 +33,6 @@ It should show an adress and open in the terminal automatically :)
 
 ## Overview
 <img src="./images/overview.png" width="900">
+
+## Dev notes
+I recently migrated the pip packages from python 3.9 to python 3.11 to support the NFC reader, I migrated it using the instructions [here.](https://www.activestate.com/resources/quick-reads/how-to-update-all-python-packages/)
