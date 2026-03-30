@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+from NFC.read_nfc import write_text, read_text # Local module, see NFC/read_nfc.py
 
 use_real_data = False # Change this to false in order to demo!
 
@@ -168,6 +169,13 @@ st.plotly_chart(risk_fig, use_container_width=True)
 
 if (not use_real_data):
     st.info("Prototype — geen echte DISK data")
+    
+try:
+    st.info(read_text()) # NFC!
+except:
+    print("-"*20)
+    print("[ERROR] Could not read NFC tag!!")
+    print("-"*20)
 
 # For passing data to other pages
 st.session_state["df"] = df

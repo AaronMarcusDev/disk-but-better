@@ -3,3 +3,4 @@ data/
 todo.md
 .DS_Store
 disk/
+__pycache__

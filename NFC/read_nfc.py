@@ -179,28 +179,28 @@ def read_text() -> str:
 
 # Main / start of run loop
 
-while True:
-    try:
-        # connection = r[0].createConnection()
-        # connection.connect()
+# while True:
+#     try:
+#         # connection = r[0].createConnection()
+#         # connection.connect()
         
-        # # APDU to get UID (works for most MIFARE tags)
-        # GET_UID = [0xFF, 0xCA, 0x00, 0x00, 0x00]
+#         # # APDU to get UID (works for most MIFARE tags)
+#         # GET_UID = [0xFF, 0xCA, 0x00, 0x00, 0x00]
         
-        # data, sw1, sw2 = connection.transmit(GET_UID)
+#         # data, sw1, sw2 = connection.transmit(GET_UID)
         
 
-        # print("UID:", data)
-        # print("Status:", hex(sw1), hex(sw2))
+#         # print("UID:", data)
+#         # print("Status:", hex(sw1), hex(sw2))
         
-        # test_tag()
-        write_text("01A-1250")
-        value = read_text()
-        print("Read from tag:", value)
-    except:
-        print("There was no NFC chip found!")
+#         # test_tag()
+#         write_text("01A-1250")
+#         value = read_text()
+#         print("Read from tag:", value)
+#     except:
+#         print("There was no NFC chip found!")
         
-    print('-'*50)
+#     print('-'*50)
         
-    time.sleep(5)
+    # time.sleep(5)
     # exit(0)
