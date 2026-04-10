@@ -3,4 +3,5 @@ pandas
 plotly
 numpy
 numpy-stl
-pyscard
+#pyscard
+streamlit_stl

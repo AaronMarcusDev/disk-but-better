@@ -7,7 +7,6 @@ import numpy as np
 from streamlit_stl import stl_from_file
 # Custom Libraries (local)
 from NFC.read_nfc import read_text
-# from Renderer.threejs_stl_viewer import render_stl
 
 # st.set_page_config(layout="wide")
 
