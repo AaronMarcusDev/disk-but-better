@@ -1,5 +1,4 @@
-# Disk but better
-> *Please* think of a better awesome name
+# 3Disk
 
 ## Running
 **MacOS**
