@@ -4,3 +4,4 @@ todo.md
 .DS_Store
 disk/
 __pycache__
+start-venv.sh
