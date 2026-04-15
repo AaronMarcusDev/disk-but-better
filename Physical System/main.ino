@@ -51,14 +51,17 @@ void handleCode() {
   }
 
   // Match the code and light the right LEDs
-  if (code == "ALERT") {
+  if (code == "03G-301") {
     assets[0]->setLED(0, 3); // Red
-    assets[0]->setLED(1, 3);
-    assets[0]->setLED(2, 3);
+    assets[0]->setLED(1, 2);
+    assets[0]->setLED(2, 2);
+    assets[0]->setLED(3, 3);
   } 
-  else if (code == "READY") {
+  else if (code == "03G-304") {
     assets[0]->setLED(0, 1); // Green
-    assets[0]->setLED(1, 1);
+    assets[0]->setLED(1, 2);
+    assets[0]->setLED(2, 1);
+    assets[0]->setLED(3, 3);
   } 
   else if (code == "WARN") {
     assets[0]->setLED(0, 2); // Yellow

@@ -1,3 +1,5 @@
+from time import sleep
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -5,10 +7,16 @@ import plotly.graph_objects as go
 from stl import mesh
 import numpy as np
 from streamlit_stl import stl_from_file
+import requests
 # Custom Libraries (local)
 from NFC.read_nfc import read_text
 
 # st.set_page_config(layout="wide")
+
+# For the ESP connection
+def send_code(code):
+    response = requests.get(f"http://192.168.4.1/code?code={code}")
+    print(response.text)
 
 if "nfc_selected" not in st.session_state:
     st.session_state.nfc_selected = None
@@ -21,6 +29,13 @@ if st.button("Lees NFC tag"):
         if tag_value:
             st.session_state.nfc_selected = tag_value
             st.success(f"NFC tag gelezen: {tag_value}")
+            
+            sleep(1)
+            try: 
+                send_code(tag_value)
+                print("Sent the code: " + tag_value)
+            except:
+                st.error("Problem with the connection to the Physical System, try again in a few seconds.")
         else:
             st.warning("Geen geldige NFC data gevonden.")
     except Exception as e:
@@ -55,7 +70,7 @@ asset = df[df["DISK_ID"] == selected].iloc[0]
 
 st.subheader("3D Voorbeeld")
 st.set_page_config(layout="wide")
-stl_from_file(file_path="stl/intersec.stl", color="#FF00C8", key="test")
+stl_from_file(file_path="stl/intersec.stl", color="#ff2b2b", key="test")
 
 # --- Layout ---
 col1, col2 = st.columns([1, 2])
