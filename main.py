@@ -4,7 +4,7 @@ import plotly.express as px
 import numpy as np
 from NFC.read_nfc import write_text, read_text # Local module, see NFC/read_nfc.py
 
-use_real_data = False # Change this to false in order to demo!
+use_real_data = True # Change this to false in order to demo!
 
 st.set_page_config(layout="wide")
 
