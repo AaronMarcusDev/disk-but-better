@@ -5,15 +5,15 @@
 #include "Asset.h"
 
 // --- WiFi Settings ---
-const char* ssid = "3Disk_WiFi";
-const char* password = "disk-but-better";
+const char *ssid = "3Disk_WiFi";
+const char *password = "disk-but-better";
 
 WebServer server(80);
 
 // --- LED Setup ---
 #define NUM_ASSETS 1
 const int LED_COUNTS[NUM_ASSETS] = {10};
-Asset<27>* assets[NUM_ASSETS];
+Asset<27> *assets[NUM_ASSETS];
 
 // --- Web Routes ---
 // void handleSet() {
@@ -36,8 +36,10 @@ Asset<27>* assets[NUM_ASSETS];
 //   server.send(200, "text/plain", "OK");
 // }
 
-void handleCode() {
-  if (!server.hasArg("code")) {
+void handleCode()
+{
+  if (!server.hasArg("code"))
+  {
     server.send(400, "text/plain", "Missing ?code=");
     return;
   }
@@ -46,27 +48,57 @@ void handleCode() {
   Serial.println("Received code: " + code);
 
   // Reset all LEDs first
-  for (int l = 0; l < LED_COUNTS[0]; l++) {
+  for (int l = 0; l < LED_COUNTS[0]; l++)
+  {
     assets[0]->setLED(l, 0);
   }
 
   // Match the code and light the right LEDs
-  if (code == "03G-301") {
+  if (code == "03G-301")
+  {
     assets[0]->setLED(0, 3); // Red
     assets[0]->setLED(1, 2);
     assets[0]->setLED(2, 2);
     assets[0]->setLED(3, 3);
-  } 
-  else if (code == "03G-304") {
+  }
+  else if (code == "00B-1111")
+  {
     assets[0]->setLED(0, 1); // Green
     assets[0]->setLED(1, 2);
     assets[0]->setLED(2, 1);
     assets[0]->setLED(3, 3);
-  } 
-  else if (code == "WARN") {
+    assets[0]->setLED(4, 4);
+  }
+  else if (code == "WARN") // For testing purposes and to show when it is connected.
+  {
     assets[0]->setLED(0, 2); // Yellow
-  } 
-  else {
+    assets[0]->setLED(1, 2);
+    assets[0]->setLED(2, 2);
+    assets[0]->setLED(3, 2);
+    assets[0]->setLED(4, 2);
+    assets[0]->setLED(5, 2);
+    assets[0]->setLED(6, 2);
+    assets[0]->setLED(7, 2);
+  }
+  else if (code == "12C-1212")
+  {
+    assets[0]->setLED(0, 3);
+    assets[0]->setLED(1, 2);
+    assets[0]->setLED(2, 4);
+    assets[0]->setLED(3, 2);
+    assets[0]->setLED(4, 1);
+  }
+
+  else if (code == "00A-1234")
+  {                          // De knoop
+    assets[0]->setLED(0, 3); // Yellow
+    assets[0]->setLED(1, 1);
+
+    assets[0]->setLED(3, 2);
+    assets[0]->setLED(4, 2);
+  }
+  else
+  {
     server.send(400, "text/plain", "Unknown code");
     return;
   }
@@ -75,11 +107,13 @@ void handleCode() {
   server.send(200, "text/plain", "OK: " + code);
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
 
   // Init assets
-  for (int i = 0; i < NUM_ASSETS; i++) {
+  for (int i = 0; i < NUM_ASSETS; i++)
+  {
     assets[i] = new Asset<27>(i, LED_COUNTS[i]);
   }
   FastLED.show();
@@ -91,12 +125,13 @@ void setup() {
   Serial.println(WiFi.softAPIP()); // 192.168.4.1
 
   // Route
-//   server.on("/set", handleSet);
+  //   server.on("/set", handleSet);
   server.on("/code", handleCode);
   server.begin();
   Serial.println("Server started");
 }
 
-void loop() {
+void loop()
+{
   server.handleClient();
 }

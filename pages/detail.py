@@ -11,8 +11,7 @@ import requests
 # Custom Libraries (local)
 from NFC.read_nfc import read_text
 
-# st.set_page_config(layout="wide")
-
+theme_color = "#ff2b2b"
 # For the ESP connection
 def send_code(code):
     response = requests.get(f"http://192.168.4.1/code?code={code}")
@@ -70,7 +69,15 @@ asset = df[df["DISK_ID"] == selected].iloc[0]
 
 st.subheader("3D Voorbeeld")
 st.set_page_config(layout="wide")
-stl_from_file(file_path="stl/intersec.stl", color="#ff2b2b", key="test")
+if st.session_state.nfc_selected == "00A-1234": # 'De knoop'
+    stl_from_file(file_path="stl/aw1.stl", color=theme_color, key="test")
+elif st.session_state.nfc_selected == "00B-1111":
+    stl_from_file(file_path="stl/aw2.stl", color=theme_color, key="test")
+elif st.session_state.nfc_selected == "12C-1212":
+    stl_from_file(file_path="stl/aw3.stl", color=theme_color, key="test")
+else:
+    stl_from_file(file_path="stl/bridge.stl", color=theme_color, key="test")
+    st.info("Er is geen 3D weergave beschikbaar voor dit kunstwerk.")
 
 # --- Layout ---
 col1, col2 = st.columns([1, 2])

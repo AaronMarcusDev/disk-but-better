@@ -16,9 +16,12 @@ if st.button('Send'):
     send_code(message)
     
 st.text("You can also reset the LED strip in one go:")
-    
+
 if st.button('Reset LEDs'):
-    i = 0
-    while i < 10:
-        send_code('WARN')
-        i += 1
+    try:
+        i = 0
+        while i < 10:
+            send_code('WARN')
+            i += 1
+    except:
+        st.info("Try again, the request failed.")
